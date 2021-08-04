@@ -36,6 +36,9 @@ class InAppPurchaseIosPlatform extends InAppPurchasePlatform {
   Stream<List<PurchaseDetails>> get purchaseStream =>
       _observer.purchaseUpdatedController.stream;
 
+  /// todo 自定义新增
+  Stream<SKPaymentWrapper> get shouldAddStoreStream => _observer.shouldAddStorePaymentController.stream;
+
   /// Callback handler for transaction status changes.
   @visibleForTesting
   static SKTransactionObserverWrapper get observer => _observer;
@@ -59,7 +62,10 @@ class InAppPurchaseIosPlatform extends InAppPurchasePlatform {
       onListen: () => _skPaymentQueueWrapper.startObservingTransactionQueue(),
       onCancel: () => _skPaymentQueueWrapper.stopObservingTransactionQueue(),
     );
-    _observer = _TransactionObserver(updateController);
+    /// todo 自定义新增
+    StreamController<SKPaymentWrapper> addStoreController = StreamController.broadcast();
+    /// todo 自定义修改
+    _observer = _TransactionObserver(updateController, addStoreController);
     _skPaymentQueueWrapper.setTransactionObserver(observer);
   }
 
@@ -158,7 +164,11 @@ class _TransactionObserver implements SKTransactionObserverWrapper {
   Completer? _restoreCompleter;
   late String _receiptData;
 
-  _TransactionObserver(this.purchaseUpdatedController);
+  /// todo 自定义新增
+  final StreamController<SKPaymentWrapper> shouldAddStorePaymentController;
+
+  /// todo 自定义修改
+  _TransactionObserver(this.purchaseUpdatedController, this.shouldAddStorePaymentController);
 
   Future<void> restoreTransactions({
     required SKPaymentQueueWrapper queue,
@@ -198,8 +208,11 @@ class _TransactionObserver implements SKTransactionObserverWrapper {
 
   bool shouldAddStorePayment(
       {required SKPaymentWrapper payment, required SKProductWrapper product}) {
-    // In this unified API, we always return true to keep it consistent with the behavior on Google Play.
-    return true;
+    /// todo 自定义新增
+    shouldAddStorePaymentController.add(payment);
+
+    /// todo 自定义修改, true 表示处理应用商店的订阅信息
+    return false;
   }
 
   Future<String> getReceiptData() async {

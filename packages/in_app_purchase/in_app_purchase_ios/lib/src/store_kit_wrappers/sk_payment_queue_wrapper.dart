@@ -250,10 +250,11 @@ class SKPaymentQueueWrapper {
         }
       case 'shouldAddStorePayment':
         {
-          SKPaymentWrapper payment =
-              SKPaymentWrapper.fromJson(call.arguments['payment']);
-          SKProductWrapper product =
-              SKProductWrapper.fromJson(call.arguments['product']);
+          /// todo 自定义修改
+          final Map<String, dynamic> paymentMap = Map.from(call.arguments['payment']);
+          final Map<String, dynamic> productMap = Map.from(call.arguments['product']);
+          SKPaymentWrapper payment = SKPaymentWrapper.fromJson(paymentMap);
+          SKProductWrapper product = SKProductWrapper.fromJson(productMap);
           return Future<void>(() {
             if (observer.shouldAddStorePayment(
                     payment: payment, product: product) ==

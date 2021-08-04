@@ -8,6 +8,9 @@ import 'package:in_app_purchase_platform_interface/in_app_purchase_platform_inte
 import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 import 'package:in_app_purchase_ios/in_app_purchase_ios.dart';
 
+/// todo 自定义新增
+import 'package:in_app_purchase_ios/store_kit_wrappers.dart';
+
 export 'package:in_app_purchase_platform_interface/in_app_purchase_platform_interface.dart'
     show
         IAPError,
@@ -70,6 +73,9 @@ class InAppPurchase implements InAppPurchasePlatformAdditionProvider {
   /// events after they start to listen.
   Stream<List<PurchaseDetails>> get purchaseStream =>
       InAppPurchasePlatform.instance.purchaseStream;
+
+  /// todo 自定义新增
+  Stream<SKPaymentWrapper> get shouldAddStoreStream => InAppPurchasePlatform.instance.shouldAddStoreStream;
 
   /// Returns `true` if the payment platform is ready and available.
   Future<bool> isAvailable() => InAppPurchasePlatform.instance.isAvailable();
