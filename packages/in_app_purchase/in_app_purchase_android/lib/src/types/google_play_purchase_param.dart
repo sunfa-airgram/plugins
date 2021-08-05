@@ -12,6 +12,7 @@ class GooglePlayPurchaseParam extends PurchaseParam {
   GooglePlayPurchaseParam({
     required ProductDetails productDetails,
     String? applicationUserName,
+    this.profileId,
     this.changeSubscriptionParam,
   }) : super(
           productDetails: productDetails,
@@ -21,4 +22,7 @@ class GooglePlayPurchaseParam extends PurchaseParam {
   /// The 'changeSubscriptionParam' containing information for upgrading or
   /// downgrading an existing subscription.
   final ChangeSubscriptionParam? changeSubscriptionParam;
+
+  /// [obfuscatedProfileId] (https://developer.android.com/reference/com/android/billingclient/api/BillingFlowParams.Builder#setobfuscatedprofileid).
+  final String? profileId;
 }
