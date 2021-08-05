@@ -125,15 +125,18 @@ class InAppPurchaseAndroidPlatform extends InAppPurchasePlatform {
   @override
   Future<bool> buyNonConsumable({required PurchaseParam purchaseParam}) async {
     ChangeSubscriptionParam? changeSubscriptionParam;
+    String? profileId;
 
     if (purchaseParam is GooglePlayPurchaseParam) {
       changeSubscriptionParam = purchaseParam.changeSubscriptionParam;
+      profileId = purchaseParam.profileId;
     }
 
     BillingResultWrapper billingResultWrapper =
         await billingClient.launchBillingFlow(
             sku: purchaseParam.productDetails.id,
             accountId: purchaseParam.applicationUserName,
+            obfuscatedProfileId: profileId,
             oldSku: changeSubscriptionParam?.oldPurchaseDetails.productID,
             purchaseToken: changeSubscriptionParam
                 ?.oldPurchaseDetails.verificationData.serverVerificationData,
